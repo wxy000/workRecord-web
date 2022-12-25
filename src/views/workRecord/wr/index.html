@@ -1,0 +1,51 @@
+<title>记录</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a><cite>工作记录</cite></a>
+		<a><cite>记录</cite></a>
+	</div>
+</div>
+
+<div class="layui-fluid">
+	<div class="layui-card">
+		<div class="layui-card-body">
+			<table id="LAY-app-wr" lay-filter="LAY-app-wr"></table>
+			<script type="text/html" id="LAY-app-wr-toolbar">
+				<div class="layui-btn-container">
+					<button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="wr_download_file">
+						<i class="layui-icon layui-icon-file"></i>下载模板
+					</button>
+					<button class="layui-btn layui-btn-sm" lay-event="wr_import_data" id="wr_import_data">
+						<i class="layui-icon layui-icon-upload"></i>导入数据
+					</button>
+				</div>
+			</script>
+			<!--是否紧急-->
+			<script type="text/html" id="wr-table-urgentTpl">
+				<input type="checkbox" name="urgent" lay-skin="switch" lay-text="是|否" lay-filter="wr-table-urgentI"
+				       value="{{ d.urgent }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.urgent == 'Y' ? 'checked' : '' }}>
+			</script>
+			<!--案件状态-->
+			<script type="text/html" id="wr-table-casestatusTpl">
+				<input type="checkbox" name="casestatus" lay-skin="switch" lay-text="已结案|未结案" lay-filter="wr-table-casestatusI"
+				       value="{{ d.casestatus }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.casestatus == 2 ? 'checked' : '' }}>
+			</script>
+			<!--是否现场已处理-->
+			<script type="text/html" id="wr-table-onsiteTpl">
+				<input type="checkbox" name="onsite" lay-skin="switch" lay-text="是|否" lay-filter="wr-table-onsiteI"
+				       value="{{ d.onsite }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.onsite == 1 ? 'checked' : '' }}>
+			</script>
+			<script type="text/html" id="table-system-order">
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="wr_del">
+					<i class="layui-icon layui-icon-delete"></i>删除
+				</a>
+			</script>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui.use('wr', layui.factory('wr'));
+</script>
