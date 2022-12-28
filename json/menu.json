@@ -19,6 +19,17 @@
 			]
 		},
 		{
+			"name": "analysis",
+			"title": "统计分析",
+			"icon": "layui-icon-chart",
+			"list": [
+				{
+					"name": "month-year",
+					"title": "月报-年报"
+				}
+			]
+		},
+		{
 			"name": "set",
 			"title": "设置",
 			"icon": "layui-icon-set",
