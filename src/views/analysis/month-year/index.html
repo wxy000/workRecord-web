@@ -1,19 +1,58 @@
-<title>记录</title>
+<title>月报-年报</title>
 
 <div class="layui-card layadmin-header">
 	<div class="layui-breadcrumb" lay-filter="breadcrumb">
 		<a lay-href="">主页</a>
+		<a><cite>统计分析</cite></a>
 		<a><cite>月报-年报</cite></a>
 	</div>
 </div>
 
 <div class="layui-fluid">
-	<div class="layui-card">
-		<div class="layui-card-body">
-			<div>121212121</div>
+	<div class="layui-col-md12">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<div class="layui-form" style="margin-bottom: -20px;">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">选择日期</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="feedbackdatestart" name="feedbackdatestart" placeholder="开始日期">
+							</div>
+							<div class="layui-form-mid">-</div>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="feedbackdateend" name="feedbackdateend" placeholder="结束日期">
+							</div>
+							<div class="layui-input-inline">
+								<button type="button" lay-submit lay-filter="search-submit" class="layui-btn">
+									<i class="layui-icon layui-icon-search"></i>搜索
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-col-md12" style="padding-top: 10px;">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<div class="layui-carousel layadmin-carousel layadmin-dataview-my" data-anim="fade" lay-filter="LAY-index-normline">
+					<div carousel-item id="LAY-index-normline">
+					  	<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
+
+<style>
+	.layadmin-dataview-my{height: 300px !important;}
+	.layadmin-dataview-my>*[carousel-item]:before{display: none;}
+	.layadmin-dataview-my>*[carousel-item]>div{height: 300px;}
+</style>
 
 <script>
 	layui.use('analysis', layui.factory('analysis'));
