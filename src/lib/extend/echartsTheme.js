@@ -40,7 +40,7 @@ layui.define(function(exports) {
 
 		// 提示框
 		tooltip: {
-			backgroundColor: 'rgba(50,50,50,0.5)',   // 提示背景颜色，默认为透明度为0.7的黑色
+			backgroundColor: 'rgba(240,248,255,0.7)',   // 提示背景颜色，默认为透明度为0.7的黑色
 			axisPointer : {      // 坐标轴指示器，坐标轴触发有效
 				type : 'line',     // 默认为直线，可选为：'line' | 'shadow'
 				lineStyle : {      // 直线指示器样式设置

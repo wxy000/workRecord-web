@@ -86,12 +86,52 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 					{
 						name: '预计时数',
 						type: 'line',
-						data: y1
+						data: y1,
+						markLine: {
+        					data: [{ type: 'average', name: 'Avg' }]
+      					}
 					},
 					{
 						name: '实际时数',
 						type: 'line',
-						data: y2
+						data: y2,
+						markLine: {
+        					data: [{ type: 'average', name: 'Avg' }]
+      					}
+					}
+				]
+			}
+		]
+	}
+
+	function opt_customerESpie(es2s){
+		return [
+			{
+				title: {
+					text: '客户预计时长分布',
+					//subtext: 'Fake Data',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+					  	name: '预计时数',
+					  	type: 'pie',
+					  	radius: '75%',
+					  	data: es2s,
+					  	emphasis: {
+							itemStyle: {
+						  		shadowBlur: 10,
+						  		shadowOffsetX: 0,
+						  		shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+					  	}
 					}
 				]
 			}
@@ -152,9 +192,15 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			// })
 			result = "";
 			result = loadData('/analysis/my/getAnalysis1',field)
-			console.log(result)
+			//console.log(result)
 			normline = opt_normline(field.feedbackdatestart,field.feedbackdateend,result.date1,result.y1,result.y2)
 			rendernormline(0);
+
+			result = "";
+			result = loadData('/analysis/my/getAnalysis2',field)
+			console.log(result)
+			customerESpie = opt_customerESpie(result.es2s)
+			rendercustomerESpie(0)
 		});
 		
 		//时数折线图
@@ -167,6 +213,16 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		};
 		if(!elemnormline[0]) return;
 		//rendernormline(0);
+
+		//按客户统计饼图
+		var echcustomerESpie = [], customerESpie = []
+		var elemcustomerESpie = $('#LAY-index-customerESpie').children('div')
+		var rendercustomerESpie = function(index){
+		  	echcustomerESpie[index] = echarts.init(elemcustomerESpie[index], layui.echartsTheme);
+		  	echcustomerESpie[index].setOption(customerESpie[index]);
+		  	window.onresize = echcustomerESpie[index].resize;
+		};
+		if(!elemcustomerESpie[0]) return;
 	});
 
 	exports('analysis', {})
