@@ -104,7 +104,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		]
 	}
 
-	function opt_customerESpie(es2s){
+	function opt_customerpie(es2s,ac2s){
 		return [
 			{
 				title: {
@@ -134,6 +134,77 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 					  	}
 					}
 				]
+			},
+			{
+				title: {
+					text: '客户实际时长分布',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+					  	name: '预计时数',
+					  	type: 'pie',
+					  	radius: '75%',
+					  	data: ac2s,
+					  	emphasis: {
+							itemStyle: {
+						  		shadowBlur: 10,
+						  		shadowOffsetX: 0,
+						  		shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+					  	}
+					}
+				]
+			}
+		]
+	}
+
+	function opt_issuepie(es3sall){
+		return [
+			{
+				title: {
+					text: '问题分类时长分布'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				series: {
+					type: 'sunburst',
+					data: es3sall,
+					radius: [0, '100%'],
+					label: {
+					  	rotate: 'radial'
+					},
+					levels: [
+						{},
+						{
+							//r0: '35%',
+							r: '70%',
+							label: {
+							  	align: 'right'
+							}
+						},
+						{
+						  	r0: '70%',
+						  	r: '75%',
+						  	label: {
+								position: 'outside',
+								padding: 3,
+								silent: false
+						  	},
+						  	itemStyle: {
+								borderWidth: 3
+						  	}
+						}
+					  ]
+				}
 			}
 		]
 	}
@@ -154,8 +225,9 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		return result
 	}
 
-	layui.use(['echarts'], function(){
+	layui.use(['echarts','carousel'], function(){
 		var $ = layui.$
+		,carousel = layui.carousel
 		,echarts = layui.echarts;
 
 		//开始日期
@@ -198,13 +270,20 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 
 			result = "";
 			result = loadData('/analysis/my/getAnalysis2',field)
-			console.log(result)
-			customerESpie = opt_customerESpie(result.es2s)
-			rendercustomerESpie(0)
+			//console.log(result)
+			customerpie = opt_customerpie(result.es2s,result.ac2s)
+			rendercustomerpie(0)
+			rendercustomerpie(1)
+
+			result = "";
+			result = loadData('/analysis/my/getAnalysis3',field)
+			// console.log(result)
+			issuepie = opt_issuepie(result.es3sall)
+			renderissuepie(0)
 		});
 		
 		//时数折线图
-		var echnormline = [], normline = []
+		var echnormline = [], normline = opt_normline([],[],[],undefined,undefined)
 		var elemnormline = $('#LAY-index-normline').children('div')
 		var rendernormline = function(index){
 		  	echnormline[index] = echarts.init(elemnormline[index], layui.echartsTheme);
@@ -215,14 +294,52 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		//rendernormline(0);
 
 		//按客户统计饼图
-		var echcustomerESpie = [], customerESpie = []
-		var elemcustomerESpie = $('#LAY-index-customerESpie').children('div')
-		var rendercustomerESpie = function(index){
-		  	echcustomerESpie[index] = echarts.init(elemcustomerESpie[index], layui.echartsTheme);
-		  	echcustomerESpie[index].setOption(customerESpie[index]);
-		  	window.onresize = echcustomerESpie[index].resize;
+		var echcustomerpie = [], customerpie = opt_customerpie([],[])
+		var elemcustomerpie = $('#LAY-index-customerpie').children('div')
+		var rendercustomerpie = function(index){
+		  	echcustomerpie[index] = echarts.init(elemcustomerpie[index], layui.echartsTheme);
+		  	echcustomerpie[index].setOption(customerpie[index]);
+		  	// window.onresize = echcustomerpie[index].resize;
+			admin.resize(function(){
+				echcustomerpie[index].resize();
+			});
 		};
-		if(!elemcustomerESpie[0]) return;
+		if(!elemcustomerpie[0]) return;
+
+		//按问题分类饼图
+		var echissuepie = [], issuepie = opt_issuepie([])
+		var elemissuepie = $('#LAY-index-issuepie').children('div')
+		var renderissuepie = function(index){
+		  	echissuepie[index] = echarts.init(elemissuepie[index], layui.echartsTheme);
+		  	echissuepie[index].setOption(issuepie[index]);
+		  	// window.onresize = echcustomerpie[index].resize;
+			admin.resize(function(){
+				echissuepie[index].resize();
+			});
+		};
+		if(!elemissuepie[0]) return;
+
+		//监听数据概览轮播
+		var carouselIndexcustomer = 0;
+		var carouselIndexissue = 0;
+		carousel.on('change(LAY-index-customerpie)', function(obj){
+			rendercustomerpie(carouselIndexcustomer = obj.index);
+		});
+		carousel.on('change(LAY-index-issuepie)', function(obj){
+			renderissuepie(carouselIndexissue = obj.index);
+		});
+		//监听侧边伸缩
+		layui.admin.on('side', function(){
+			setTimeout(function(){
+				rendercustomerpie(carouselIndexcustomer);
+				renderissuepie(carouselIndexissue);
+			}, 300);
+		});
+		//监听路由
+		layui.admin.on('hash(tab)', function(){
+			layui.router().path.join('') || rendercustomerpie(carouselIndexcustomer);
+			layui.router().path.join('') || renderissuepie(carouselIndexissue);
+		});
 	});
 
 	exports('analysis', {})

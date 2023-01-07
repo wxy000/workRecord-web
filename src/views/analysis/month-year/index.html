@@ -9,50 +9,67 @@
 </div>
 
 <div class="layui-fluid">
-	<div class="layui-col-md12">
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<div class="layui-form" style="margin-bottom: -20px;">
-					<div class="layui-form-item">
-						<div class="layui-inline">
-							<label class="layui-form-label">选择日期</label>
-							<div class="layui-input-inline">
-								<input type="text" class="layui-input" id="feedbackdatestart" name="feedbackdatestart" placeholder="开始日期">
-							</div>
-							<div class="layui-form-mid">-</div>
-							<div class="layui-input-inline">
-								<input type="text" class="layui-input" id="feedbackdateend" name="feedbackdateend" placeholder="结束日期">
-							</div>
-							<div class="layui-input-inline">
-								<button type="button" lay-submit lay-filter="search-submit" class="layui-btn">
-									<i class="layui-icon layui-icon-search"></i>搜索
-								</button>
+	<div class="layui-row layui-col-space10">
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-form" style="margin-bottom: -20px;">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">选择日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="feedbackdatestart" name="feedbackdatestart" placeholder="开始日期">
+								</div>
+								<div class="layui-form-mid">-</div>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="feedbackdateend" name="feedbackdateend" placeholder="结束日期">
+								</div>
+								<div class="layui-input-inline">
+									<button type="button" lay-submit lay-filter="search-submit" class="layui-btn">
+										<i class="layui-icon layui-icon-search"></i>搜索
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="layui-col-md12" style="padding-top: 10px;">
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<div class="layui-carousel layadmin-carousel layadmin-dataview-my" data-anim="fade" lay-filter="LAY-index-normline">
-					<div carousel-item id="LAY-index-normline">
-					  	<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-body">
+					<div class="layui-carousel layadmin-carousel layadmin-dataview-my" data-anim="fade" lay-filter="LAY-index-normline">
+						<div carousel-item id="LAY-index-normline">
+							<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="layui-col-md6" style="padding-top: 10px;">
-		<div class="layui-card">
-			<div class="layui-card-body">
-				<div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-customerESpie">
-					<div carousel-item id="LAY-index-customerESpie">
-					  	<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">按客户统计</div>
+				<div class="layui-card-body">
+					<div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-customerpie">
+						<div carousel-item id="LAY-index-customerpie">
+							<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">按问题类型统计</div>
+				<div class="layui-card-body">
+					<div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-issuepie">
+						<div carousel-item id="LAY-index-issuepie">
+							<div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+						</div>
 					</div>
 				</div>
 			</div>
