@@ -166,7 +166,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		]
 	}
 
-	function opt_issuepie(es3sall){
+	function opt_issuepie(es3sall,es3s,ac3s){
 		return [
 			{
 				title: {
@@ -205,6 +205,62 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 						}
 					  ]
 				}
+			},
+			{
+				title: {
+					text: '问题分类预计时长分布',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+					  	name: '预计时数',
+					  	type: 'pie',
+					  	radius: '75%',
+					  	data: es3s,
+					  	emphasis: {
+							itemStyle: {
+						  		shadowBlur: 10,
+						  		shadowOffsetX: 0,
+						  		shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+					  	}
+					}
+				]
+			},
+			{
+				title: {
+					text: '问题分类实际时长分布',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+					  	name: '预计时数',
+					  	type: 'pie',
+					  	radius: '75%',
+					  	data: ac3s,
+					  	emphasis: {
+							itemStyle: {
+						  		shadowBlur: 10,
+						  		shadowOffsetX: 0,
+						  		shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+					  	}
+					}
+				]
 			}
 		]
 	}
@@ -278,8 +334,10 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			result = "";
 			result = loadData('/analysis/my/getAnalysis3',field)
 			// console.log(result)
-			issuepie = opt_issuepie(result.es3sall)
+			issuepie = opt_issuepie(result.es3sall,result.es3s,result.ac3s)
 			renderissuepie(0)
+			renderissuepie(1)
+			renderissuepie(2)
 		});
 		
 		//时数折线图
@@ -307,7 +365,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		if(!elemcustomerpie[0]) return;
 
 		//按问题分类饼图
-		var echissuepie = [], issuepie = opt_issuepie([])
+		var echissuepie = [], issuepie = opt_issuepie([],[],[])
 		var elemissuepie = $('#LAY-index-issuepie').children('div')
 		var renderissuepie = function(index){
 		  	echissuepie[index] = echarts.init(elemissuepie[index], layui.echartsTheme);
