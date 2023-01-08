@@ -265,6 +265,62 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		]
 	}
 
+	function opt_customerpie_table(tbs){
+		for (let i = 0; i < tbs.length; i++){
+			tbs[i].esv = (tbs[i].esv * 100).toFixed(2) + '%';
+			tbs[i].acv = (tbs[i].acv * 100).toFixed(2) + '%';
+		}
+		table.render({
+			elem: '#LAY-index-customerpie_table'
+			,cols: [[ //标题栏
+			  	{field: 'name', title: '客户名称', totalRowText: "合计："}
+			  	,{field: 'es', title: '预计时长', totalRow: true}
+			  	,{field: 'esv', title: '预计比例'}
+			  	,{field: 'ac', title: '实际时长', totalRow: true}
+			  	,{field: 'acv', title: '实际比例'}
+			]]
+			,data: tbs
+			,size: 'sm'
+			,height: '500px'
+			,totalRow: true
+			//,page: true
+			,limit: 99999
+			//,skin: 'line' //表格风格
+			//,even: true
+			,done: function(res, curr, count){
+				let bodyStyle = document.body.style;
+				bodyStyle.overflowY = 'hidden';
+			}
+		});
+		// table.reload("LAY-index-customerpie_table")
+	}
+
+	function opt_issuepie_table(tbs){
+		for (let i = 0; i < tbs.length; i++){
+			tbs[i].esv = (tbs[i].esv * 100).toFixed(2) + '%';
+			tbs[i].acv = (tbs[i].acv * 100).toFixed(2) + '%';
+		}
+		table.render({
+			elem: '#LAY-index-issuepie_table'
+			,cols: [[ //标题栏
+			  	{field: 'name', title: '问题类型', totalRowText: "合计："}
+			  	,{field: 'es', title: '预计时长', totalRow: true}
+			  	,{field: 'esv', title: '预计比例'}
+			  	,{field: 'ac', title: '实际时长', totalRow: true}
+			  	,{field: 'acv', title: '实际比例'}
+			]]
+			,data: tbs
+			,size: 'sm'
+			,height: '500px'
+			,totalRow: true
+			,limit: 99999
+			,done: function(res, curr, count){
+				let bodyStyle = document.body.style;
+				bodyStyle.overflowY = 'hidden';
+			}
+		});
+	}
+
 	function loadData(url, field){
 		let result = ""
 		admin.req({
@@ -281,8 +337,9 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		return result
 	}
 
-	layui.use(['echarts','carousel'], function(){
+	layui.use(['echarts','carousel','table'], function(){
 		var $ = layui.$
+		,table = layui.table
 		,carousel = layui.carousel
 		,echarts = layui.echarts;
 
@@ -330,6 +387,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			customerpie = opt_customerpie(result.es2s,result.ac2s)
 			rendercustomerpie(0)
 			rendercustomerpie(1)
+			opt_customerpie_table(result.tbs)
 
 			result = "";
 			result = loadData('/analysis/my/getAnalysis3',field)
@@ -338,6 +396,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			renderissuepie(0)
 			renderissuepie(1)
 			renderissuepie(2)
+			opt_issuepie_table(result.tbs)
 		});
 		
 		//时数折线图
@@ -353,7 +412,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 
 		//按客户统计饼图
 		var echcustomerpie = [], customerpie = opt_customerpie([],[])
-		var elemcustomerpie = $('#LAY-index-customerpie').children('div')
+		var elemcustomerpie = $('#LAY-index-customerpie').children('div.thisIsEcharts')
 		var rendercustomerpie = function(index){
 		  	echcustomerpie[index] = echarts.init(elemcustomerpie[index], layui.echartsTheme);
 		  	echcustomerpie[index].setOption(customerpie[index]);
@@ -366,7 +425,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 
 		//按问题分类饼图
 		var echissuepie = [], issuepie = opt_issuepie([],[],[])
-		var elemissuepie = $('#LAY-index-issuepie').children('div')
+		var elemissuepie = $('#LAY-index-issuepie').children('div.thisIsEcharts')
 		var renderissuepie = function(index){
 		  	echissuepie[index] = echarts.init(elemissuepie[index], layui.echartsTheme);
 		  	echissuepie[index].setOption(issuepie[index]);
