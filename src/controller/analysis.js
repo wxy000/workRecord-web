@@ -325,7 +325,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		table.render({
 			elem: '#LAY-index-detail_table'
 			,cols: [[
-				{field: 'customername', title: '客户'}
+				{field: 'cname', title: '客户'}
 				,{field: 'number', title: '作业编号'}
 				,{field: 'title', title: '问题标题'}
 				,{field: 'content', title: '问题描述'}
