@@ -186,13 +186,13 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 						{},
 						{
 							//r0: '35%',
-							r: '70%',
+							r: '50%',
 							label: {
 							  	align: 'right'
 							}
 						},
 						{
-						  	r0: '70%',
+						  	r0: '50%',
 						  	r: '75%',
 						  	label: {
 								position: 'outside',
