@@ -321,6 +321,35 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		});
 	}
 
+	function opt_detail_table(tbs){
+		table.render({
+			elem: '#LAY-index-detail_table'
+			,cols: [[
+				{field: 'customername', title: '客户'}
+				,{field: 'number', title: '作业编号'}
+				,{field: 'title', title: '问题标题'}
+				,{field: 'content', title: '问题描述'}
+				,{field: 'feedbackname', title: '反馈人'}
+				,{field: 'feedbackdate', title: '反馈时间'}
+				,{field: 'productname', title: '产品'}
+				,{field: 'urgent', title: '紧急', width: 50, templet: '#analysis-table-urgentTpl', unresize: true}
+				,{field: 'issuemainname', title: '问题分类'}
+				,{field: 'issuedetailname', title: '问题类型'}
+				,{field: 'handlername', title: '处理人'}
+				,{field: 'handleestimatetime', title: '预计时长'}
+				,{field: 'handleactualtime', title: '实际时长'}
+				,{field: 'handlereply', title: '处理回复'}
+				,{field: 'casestatus', title: '状态', width: 50, templet: '#analysis-table-casestatusTpl', unresize: true}
+				,{field: 'onsite', title: '现场', width: 50, templet: '#analysis-table-onsiteTpl', unresize: true}
+				,{field: 'closetime', title: '结案时间'}
+				,{field: 'mark', title: '备注'}
+			]]
+			,data: tbs
+			,size: 'sm'
+			,page: true
+		});
+	}
+
 	function loadData(url, field){
 		let result = ""
 		admin.req({
@@ -397,6 +426,10 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			renderissuepie(1)
 			renderissuepie(2)
 			opt_issuepie_table(result.tbs)
+
+			result = "";
+			result = loadData('/analysis/my/getAnalysis4',field)
+			opt_detail_table(result)
 		});
 		
 		//时数折线图

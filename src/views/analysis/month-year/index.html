@@ -78,6 +78,30 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="layui-col-md12">
+			<div class="layui-card">
+				<div class="layui-card-header">明细数据</div>
+				<div class="layui-card-body">
+					<table id="LAY-index-detail_table" lay-filter="LAY-index-detail_table"></table>
+					<!--是否紧急-->
+					<script type="text/html" id="analysis-table-urgentTpl">
+						<input type="checkbox" name="urgent" lay-skin="primary" lay-text="是|否" disabled
+							value="{{ d.urgent }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.urgent == 'Y' ? 'checked' : '' }}>
+					</script>
+					<!--案件状态-->
+					<script type="text/html" id="analysis-table-casestatusTpl">
+						<input type="checkbox" name="casestatus" lay-skin="primary" lay-text="已结案|未结案" disabled
+							value="{{ d.casestatus }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.casestatus == 2 ? 'checked' : '' }}>
+					</script>
+					<!--是否现场已处理-->
+					<script type="text/html" id="analysis-table-onsiteTpl">
+						<input type="checkbox" name="onsite" lay-skin="primary" lay-text="是|否" disabled
+							value="{{ d.onsite }}" data-json="{{ encodeURIComponent(JSON.stringify(d)) }}" {{ d.onsite == 1 ? 'checked' : '' }}>
+					</script>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
