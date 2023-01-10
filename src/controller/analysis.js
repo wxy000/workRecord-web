@@ -265,6 +265,23 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		]
 	}
 
+	function opt_normline_table(ths,esac){
+		table.render({
+			elem: '#LAY-index-normline_table'
+			,cols: [ths]
+			,data: esac
+			,size: 'sm'
+			,height: '300px'
+			,totalRow: true
+			//,page: true
+			,limit: 99999
+			,done: function(res, curr, count){
+				let bodyStyle = document.body.style;
+				bodyStyle.overflowY = 'hidden';
+			}
+		});
+	}
+
 	function opt_customerpie_table(tbs){
 		for (let i = 0; i < tbs.length; i++){
 			tbs[i].esv = (tbs[i].esv * 100).toFixed(2) + '%';
@@ -411,6 +428,11 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			rendernormline(0);
 
 			result = "";
+			result = loadData('/analysis/my/getAnalysis5',field)
+			console.log(result)
+			opt_normline_table(result.ths,result.esac)
+
+			result = "";
 			result = loadData('/analysis/my/getAnalysis2',field)
 			//console.log(result)
 			customerpie = opt_customerpie(result.es2s,result.ac2s)
@@ -434,7 +456,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		
 		//时数折线图
 		var echnormline = [], normline = opt_normline([],[],[],undefined,undefined)
-		var elemnormline = $('#LAY-index-normline').children('div')
+		var elemnormline = $('#LAY-index-normline').children('div.thisIsEcharts')
 		var rendernormline = function(index){
 		  	echnormline[index] = echarts.init(elemnormline[index], layui.echartsTheme);
 		  	echnormline[index].setOption(normline[index]);
