@@ -33,7 +33,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 	
 	});
 
-	function opt_normline(date1,date2,xzhou,y1,y2){
+	function opt_normline(date1,date2,xzhou,y1,y2,bcus,bths,bes6s){
 		console.log(date1,date2)
 		var textstr = "全时段时数变化"
 		if ((date1===undefined || date1==="") && (date2!==undefined && date2!=="")){
@@ -100,6 +100,45 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
       					}
 					}
 				]
+			},
+			{
+				tooltip: {
+				  	trigger: 'axis',
+				  	axisPointer: {
+						type: 'cross'
+				  	},
+					formatter: function(params){
+						var s = ""
+						for (i = 0; i < params.length; i++) { 
+							if (params[i].value !== 0) {
+								s = s+'<br>'+params[i].marker+params[i].seriesName+'：'+params[i].value
+							}
+						}
+						return '<div>'+params[0].name+s+'</div>'
+					}
+				},
+				legend: {
+				  	data: bcus
+				},
+				calculable: true,
+				grid: {
+					left: '3%',
+					right: '3%',
+					bottom: '8%',
+					// containLabel: true
+				},
+				xAxis: [
+				  	{
+						type: 'category',
+						data: bths
+				  	}
+				],
+				yAxis: [
+				  	{
+						type: 'value'
+				  	}
+				],
+				series: bes6s
 			}
 		]
 	}
@@ -423,13 +462,16 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 			// })
 			result = "";
 			result = loadData('/analysis/my/getAnalysis1',field)
+			result1 = "";
+			result1 = loadData('/analysis/my/getAnalysis6',field)
 			//console.log(result)
-			normline = opt_normline(field.feedbackdatestart,field.feedbackdateend,result.date1,result.y1,result.y2)
+			normline = opt_normline(field.feedbackdatestart,field.feedbackdateend,result.date1,result.y1,result.y2,result1.cus,result1.ths,result1.es6s)
 			rendernormline(0);
+			rendernormline(1);
 
 			result = "";
 			result = loadData('/analysis/my/getAnalysis5',field)
-			console.log(result)
+			// console.log(result)
 			opt_normline_table(result.ths,result.esac)
 
 			result = "";
@@ -460,7 +502,10 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		var rendernormline = function(index){
 		  	echnormline[index] = echarts.init(elemnormline[index], layui.echartsTheme);
 		  	echnormline[index].setOption(normline[index]);
-		  	window.onresize = echnormline[index].resize;
+		  	// window.onresize = echnormline[index].resize;
+			admin.resize(function(){
+				echnormline[index].resize();
+			});
 		};
 		if(!elemnormline[0]) return;
 		//rendernormline(0);
@@ -492,8 +537,12 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		if(!elemissuepie[0]) return;
 
 		//监听数据概览轮播
+		var carouselIndexnorm = 0;
 		var carouselIndexcustomer = 0;
 		var carouselIndexissue = 0;
+		carousel.on('change(LAY-index-normline)', function(obj){
+			rendernormline(carouselIndexnorm = obj.index);
+		});
 		carousel.on('change(LAY-index-customerpie)', function(obj){
 			rendercustomerpie(carouselIndexcustomer = obj.index);
 		});
@@ -503,12 +552,14 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 		//监听侧边伸缩
 		layui.admin.on('side', function(){
 			setTimeout(function(){
+				rendernormline(carouselIndexnorm);
 				rendercustomerpie(carouselIndexcustomer);
 				renderissuepie(carouselIndexissue);
 			}, 300);
 		});
 		//监听路由
 		layui.admin.on('hash(tab)', function(){
+			layui.router().path.join('') || rendernormline(carouselIndexnorm);
 			layui.router().path.join('') || rendercustomerpie(carouselIndexcustomer);
 			layui.router().path.join('') || renderissuepie(carouselIndexissue);
 		});
