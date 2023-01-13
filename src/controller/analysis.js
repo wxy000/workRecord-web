@@ -109,9 +109,17 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 				  	},
 					formatter: function(params){
 						var s = ""
+						var arr = []
 						for (i = 0; i < params.length; i++) { 
 							if (params[i].value !== 0) {
-								s = s+'<br>'+params[i].marker+params[i].seriesName+'：'+params[i].value
+								arr.push(params[i])
+							}
+						}
+						for (i = 0; i < arr.length; i++){
+							if (i%3===0){
+								s = s+'<br>'+'<span style="width:100px;display:inline-block;">'+params[i].marker+params[i].seriesName+'：'+params[i].value+'</span>'
+							}else{
+								s = s+'<span style="width:100px;display:inline-block;">'+params[i].marker+params[i].seriesName+'：'+params[i].value+'</span>'
 							}
 						}
 						return '<div>'+params[0].name+s+'</div>'
