@@ -115,6 +115,7 @@ layui.define(['table', 'form', 'element', 'laydate', 'upload'], function(exports
 								arr.push(params[i])
 							}
 						}
+						arr.sort(function(a, b){return b.value - a.value})
 						for (i = 0; i < arr.length; i++){
 							if (i%3===0){
 								s = s+'<br>'+'<span style="width:100px;display:inline-block;">'+arr[i].marker+arr[i].seriesName+'：'+arr[i].value+'</span>'
